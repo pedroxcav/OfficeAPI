@@ -1,53 +1,53 @@
 create table companies (
-    id binary primary key,
+    id binary(16) primary key,
     name varchar(50) unique not null,
     cnpj varchar(14) unique not null,
-    password varchar(50) not null,
+    password varchar(255) not null,
     role tinyint not null
 );
 
 create table employees (
-    id binary primary key,
+    id binary(16) primary key,
     name varchar(50) not null,
     username varchar(50) not null unique,
     cpf varchar(11) unique not null,
     email varchar(50) unique not null,
-    password varchar(50) not null,
+    password varchar(255) not null,
     role tinyint not null,
-    team_id bigint not null,
-    company_id binary not null
+    team_id bigint,
+    company_id binary(16) not null
 );
 
 create table adresses (
-    id bigint primary key,
+    id bigint auto_increment primary key,
     zip_code varchar(8) not null,
     number varchar(10) not null,
     street varchar(50) not null,
     neighborhood varchar(50) not null,
     city varchar(50) not null,
     state varchar(50) not null,
-    company_id binary not null unique
+    company_id binary(16) not null unique
 );
 
 create table projects (
-    id bigint primary key,
+    id bigint auto_increment primary key,
     name varchar(50) not null,
     description varchar(200) not null,
     deadline date not null,
     status boolean not null,
-    company_id binary not null,
-    manager_id binary not null unique
+    company_id binary(16) not null,
+    manager_id binary(16) not null unique
 );
 
 create table teams (
-    id bigint primary key,
+    id bigint auto_increment primary key,
     name varchar(50) not null,
-    company_id binary not null,
+    company_id binary(16) not null,
     project_id bigint not null
 );
 
 create table tasks (
-    id bigint primary key,
+    id bigint auto_increment primary key,
     title varchar(50) not null,
     description varchar(200) not null,
     deadline datetime not null,
@@ -56,9 +56,9 @@ create table tasks (
 );
 
 create table comments (
-    id bigint primary key,
+    id bigint auto_increment primary key,
     content varchar(500) not null,
-    owner_id binary not null,
+    owner_id binary(16) not null,
     task_id bigint not null,
     posted_at datetime not null
 );

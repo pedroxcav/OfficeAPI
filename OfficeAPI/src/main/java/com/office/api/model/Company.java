@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.br.CNPJ;
 
 import java.util.Set;
 import java.util.UUID;
@@ -24,7 +23,6 @@ public class Company {
 
     @Column(nullable = false)
     private String name;
-    @CNPJ
     @Column(nullable = false, unique = true, length = 14)
     private String cnpj;
     @Column(nullable = false)
@@ -32,12 +30,19 @@ public class Company {
     @Column(nullable = false)
     private Role role;
 
-    @OneToOne(mappedBy = "company")
+    @OneToOne(mappedBy = "company", cascade = CascadeType.REMOVE)
     private Address address;
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
     private Set<Employee> employees;
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
     private Set<Project> projects;
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
     private Set<Team> teams;
+
+    public Company(String name, String cnpj, String password) {
+        this.name = name;
+        this.cnpj = cnpj;
+        this.password = password;
+        this.role = Role.COMPANY;
+    }
 }

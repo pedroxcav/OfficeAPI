@@ -16,7 +16,7 @@ spring:
 
 #Create your own pair of keys in ('/src/main/resources') using OpenSSL!
 jwt:
-  #openssl genpkey -algorithm RSA -out private_key.pem
+  #openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
   private:
     key: classpath:private_key.pem
   #openssl rsa -pubout -in private_key.pem -out public_key.pem

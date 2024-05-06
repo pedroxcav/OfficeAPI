@@ -1,5 +1,6 @@
 package com.office.api.model;
 
+import com.office.api.model.dto.address.NewAddressDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 8)
     private String zipCode;
     @Column(nullable = false)
     private String number;
@@ -29,11 +30,20 @@ public class Address {
     private String city;
     @Column(nullable = false)
     private String state;
-
     @OneToOne
     @JoinColumn(
             name = "company_id",
             nullable = false,
             unique = true)
     private Company company;
+
+    public Address(NewAddressDTO data, Company company) {
+        this.zipCode = data.zipCode();
+        this.number = data.number();
+        this.street = data.street();
+        this.neighborhood = data.neighborhood();
+        this.city = data.city();
+        this.state = data.state();
+        this.company = company;
+    }
 }

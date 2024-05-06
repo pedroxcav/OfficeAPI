@@ -1,14 +1,11 @@
 package com.office.api.model.enums;
 
-import lombok.Getter;
-
-@Getter
 public enum Role {
-    COMPANY("company"),
-    MANAGER("manager"),
-    EMPLOYEE("employee");
-    private final String role;
-    Role(String role) {
+    COMPANY(1L),
+    MANAGER(2L),
+    EMPLOYEE(3L);
+    final Long role;
+    Role(Long role) {
         this.role = role;
     }
 }
