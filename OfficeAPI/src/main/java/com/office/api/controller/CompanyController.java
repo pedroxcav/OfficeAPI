@@ -33,8 +33,8 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     @DeleteMapping
-    public ResponseEntity<Void> deleteCompany(JwtAuthenticationToken token) {
-        companyService.deleteCompany(token);
+    public ResponseEntity<Void> removeCompany(JwtAuthenticationToken token) {
+        companyService.removeCompany(token);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     @GetMapping

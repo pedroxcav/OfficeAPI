@@ -38,13 +38,20 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                .authorizeHttpRequests(
-                        auth -> auth
-                                .requestMatchers(HttpMethod.POST, "/companies", "/companies/login").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/companies").hasAuthority("SCOPE_COMPANY")
-                                .requestMatchers(HttpMethod.PUT, "/companies").hasAuthority("SCOPE_COMPANY")
-                                .requestMatchers(HttpMethod.DELETE, "/companies").hasAuthority("SCOPE_COMPANY")
-                                .anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST,
+                                "/companies",
+                                "/companies/login",
+                                "/employees/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/employees").hasAuthority("SCOPE_COMPANY")
+                        .requestMatchers(HttpMethod.PUT, "/companies").hasAuthority("SCOPE_COMPANY")
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/companies",
+                                "/employees/{username}").hasAuthority("SCOPE_COMPANY")
+                        .requestMatchers(HttpMethod.GET, "/companies", "/employees").hasAuthority("SCOPE_COMPANY")
+                        .requestMatchers(HttpMethod.PUT, "/employees").hasAuthority("SCOPE_EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET, "/employees/me").hasAuthority("SCOPE_EMPLOYEE")
+                        .anyRequest().authenticated())
                 .build();
     }
     @Bean

@@ -2,7 +2,6 @@ package com.office.api.service;
 
 import com.office.api.exception.LoginFailedException;
 import com.office.api.exception.NullCompanyException;
-import com.office.api.exception.RegisteredCompanyException;
 import com.office.api.exception.UsedDataException;
 import com.office.api.model.Address;
 import com.office.api.model.Company;
@@ -57,7 +56,7 @@ public class CompanyService {
     }
     public void newCompany(NewCompanyDTO data) {
         if(companyRepository.existsByNameOrCnpj(data.name(), data.cnpj()))
-            throw new RegisteredCompanyException();
+            throw new UsedDataException();
 
         Company company = companyRepository.save(
                 new Company(
@@ -80,7 +79,7 @@ public class CompanyService {
 
         companyRepository.save(company);
     }
-    public void deleteCompany(JwtAuthenticationToken token) {
+    public void removeCompany(JwtAuthenticationToken token) {
         UUID companyID = UUID.fromString(token.getName());
         Company company = companyRepository.findById(companyID)
                 .orElseThrow(NullCompanyException::new);

@@ -46,6 +46,16 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private Set<Comment> comments;
+
+    public Employee(String name, String username, String cpf, String email, String password, Company company) {
+        this.name = name;
+        this.username = username;
+        this.cpf = cpf;
+        this.email = email;
+        this.password = password;
+        this.role = Role.EMPLOYEE;
+        this.company = company;
+    }
 }
