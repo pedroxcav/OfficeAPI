@@ -3,10 +3,8 @@ package com.office.api.service;
 import com.office.api.exception.LoginFailedException;
 import com.office.api.exception.NullCompanyException;
 import com.office.api.exception.UsedDataException;
-import com.office.api.model.Address;
 import com.office.api.model.Company;
 import com.office.api.model.dto.company.*;
-import com.office.api.repository.AddressRepository;
 import com.office.api.repository.CompanyRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -24,14 +22,14 @@ import java.util.UUID;
 public class CompanyService {
     private final JwtEncoder jwtEncoder;
     private final PasswordEncoder encoder;
+    private final AddressService addressService;
     private final CompanyRepository companyRepository;
-    private final AddressRepository addressRepository;
 
-    public CompanyService(JwtEncoder jwtEncoder, PasswordEncoder encoder, CompanyRepository companyRepository, AddressRepository addressRepository) {
-        this.jwtEncoder = jwtEncoder;
+    public CompanyService(JwtEncoder jwtEncoder, PasswordEncoder encoder, CompanyRepository companyRepository, AddressService addressService) {
         this.encoder = encoder;
+        this.jwtEncoder = jwtEncoder;
+        this.addressService = addressService;
         this.companyRepository = companyRepository;
-        this.addressRepository = addressRepository;
     }
 
     public LoginResponseDTO login(LoginRequestDTO data) {
@@ -63,7 +61,7 @@ public class CompanyService {
                         data.name(),
                         data.cnpj(),
                         encoder.encode(data.password())));
-        addressRepository.save(new Address(data.address(), company));
+        addressService.newAddress(data.address(), company);
     }
     public void updateCompany(UpdateCompanyDTO data, JwtAuthenticationToken token) {
         UUID companyId = UUID.fromString(token.getName());

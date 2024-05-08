@@ -1,8 +1,10 @@
 package com.office.api.model.dto.address;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.office.api.model.Address;
 
 public record AddressDTO(
+        @JsonProperty("zip_code")
         String zipCode,
         String number,
         String street,

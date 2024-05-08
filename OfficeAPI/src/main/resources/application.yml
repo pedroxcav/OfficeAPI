@@ -5,8 +5,6 @@ spring:
     init:
       mode: always
   jpa:
-    hibernate:
-      ddl-auto: update
     show-sql: true
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/db_office
