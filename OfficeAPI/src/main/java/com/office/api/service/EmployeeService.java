@@ -1,13 +1,11 @@
 package com.office.api.service;
 
 import com.office.api.exception.LoginFailedException;
-import com.office.api.exception.NullCompanyException;
 import com.office.api.exception.NullEmployeeException;
 import com.office.api.exception.UsedDataException;
 import com.office.api.model.Company;
 import com.office.api.model.Employee;
 import com.office.api.model.dto.employee.*;
-import com.office.api.repository.CompanyRepository;
 import com.office.api.repository.EmployeeRepository;
 import com.office.api.repository.ProjectRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +17,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,14 +25,14 @@ import java.util.UUID;
 public class EmployeeService {
     private final JwtEncoder jwtEncoder;
     private final PasswordEncoder encoder;
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
     private final ProjectRepository projectRepository;
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeService(JwtEncoder jwtEncoder, PasswordEncoder encoder, EmployeeRepository employeeRepository, CompanyRepository companyRepository, ProjectRepository projectRepository) {
+    public EmployeeService(JwtEncoder jwtEncoder, PasswordEncoder encoder, CompanyService companyService, EmployeeRepository employeeRepository, ProjectRepository projectRepository) {
         this.encoder = encoder;
         this.jwtEncoder = jwtEncoder;
-        this.companyRepository = companyRepository;
+        this.companyService = companyService;
         this.projectRepository = projectRepository;
         this.employeeRepository = employeeRepository;
     }
@@ -58,9 +57,7 @@ public class EmployeeService {
         return new LoginResponseDTO(accessToken.getTokenValue(), expiresIn);
     }
     public void newEmployee(NewEmployeeDTO data, JwtAuthenticationToken token) {
-        UUID companyId = UUID.fromString(token.getName());
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(NullCompanyException::new);
+        Company company = companyService.getCompany(token.getName());
 
         if(employeeRepository.existsByUsernameOrCpfOrEmail(data.username(), data.cpf(), data.email()))
             throw new UsedDataException();
@@ -91,9 +88,7 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
     public void removeEmployee(String username, JwtAuthenticationToken token) {
-        UUID companyId = UUID.fromString(token.getName());
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(NullCompanyException::new);
+        Company company = companyService.getCompany(token.getName());
         Employee employee = employeeRepository.findByUsername(username)
                 .orElseThrow(NullEmployeeException::new);
 
@@ -108,12 +103,19 @@ public class EmployeeService {
         employeeRepository.delete(employee);
     }
     public Set<EmployeeDTO> getAllEmployees(JwtAuthenticationToken token) {
-        UUID companyId = UUID.fromString(token.getName());
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(NullCompanyException::new);
+        Company company = companyService.getCompany(token.getName());
 
         Set<Employee> employees = company.getEmployees();
         return EmployeeDTO.toDTOList(employees);
+    }
+    public EmployeeDTO getEmployee(String username, JwtAuthenticationToken token) {
+        Company company = companyService.getCompany(token.getName());
+        Optional<Employee> optionalEmployee = employeeRepository.findByUsername(username);
+
+        if(optionalEmployee.isEmpty() || !company.getEmployees().contains(optionalEmployee.get()))
+            throw new NullEmployeeException();
+
+        return EmployeeDTO.toDTO(optionalEmployee.get());
     }
     public EmployeeDTO getEmployee(JwtAuthenticationToken token) {
         UUID employeeId = UUID.fromString(token.getName());

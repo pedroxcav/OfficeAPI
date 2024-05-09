@@ -64,9 +64,7 @@ public class CompanyService {
         addressService.newAddress(data.address(), company);
     }
     public void updateCompany(UpdateCompanyDTO data, JwtAuthenticationToken token) {
-        UUID companyId = UUID.fromString(token.getName());
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(NullCompanyException::new);
+        Company company = this.getCompany(token.getName());
         Set<Company> usedData = companyRepository.findAllByNameOrCnpj(data.name(), data.cnpj());
         if(usedData.stream().anyMatch(companyValue -> !companyValue.getId().equals(company.getId())))
             throw new UsedDataException();
@@ -78,9 +76,7 @@ public class CompanyService {
         companyRepository.save(company);
     }
     public void removeCompany(JwtAuthenticationToken token) {
-        UUID companyID = UUID.fromString(token.getName());
-        Company company = companyRepository.findById(companyID)
-                .orElseThrow(NullCompanyException::new);
+        Company company = this.getCompany(token.getName());
         companyRepository.delete(company);
     }
     public CompanyDTO getCompany(JwtAuthenticationToken token) {
@@ -89,5 +85,9 @@ public class CompanyService {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(NullCompanyException::new);
         return CompanyDTO.toDTO(company);
+    }
+    public Company getCompany(String companyId) {
+        return companyRepository.findById(UUID.fromString(companyId))
+                .orElseThrow(NullCompanyException::new);
     }
 }

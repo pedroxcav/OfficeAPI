@@ -1,8 +1,7 @@
 package com.office.api.model.dto.employee;
 
 import com.office.api.model.Employee;
-import com.office.api.model.dto.project.ProjectDTO;
-import com.office.api.model.dto.team.TeamDTO;
+import com.office.api.model.enums.Role;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,9 +10,8 @@ public record EmployeeDTO(String name,
                           String username,
                           String cpf,
                           String email,
-                          TeamDTO team,
-                          ProjectDTO project,
-                          String company_name) {
+                          Role role,
+                          String company) {
 
     public static EmployeeDTO toDTO(Employee employee) {
         return new EmployeeDTO(
@@ -21,8 +19,7 @@ public record EmployeeDTO(String name,
                 employee.getUsername(),
                 employee.getCpf(),
                 employee.getEmail(),
-                TeamDTO.toDTO(employee.getTeam()),
-                ProjectDTO.toDTO(employee.getProject()),
+                employee.getRole(),
                 employee.getCompany().getName());
     }
 

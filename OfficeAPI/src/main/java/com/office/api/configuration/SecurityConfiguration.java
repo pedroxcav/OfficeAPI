@@ -43,15 +43,22 @@ public class SecurityConfiguration {
                                 "/companies",
                                 "/companies/login",
                                 "/employees/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/employees").hasAuthority("SCOPE_COMPANY")
-                        .requestMatchers(HttpMethod.PUT, "/companies", "/adresses").hasAuthority("SCOPE_COMPANY")
+                        .requestMatchers(HttpMethod.POST, "/employees", "/projects").hasAuthority("SCOPE_COMPANY")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/adresses",
+                                "/companies",
+                                "/projects/{id}").hasAuthority("SCOPE_COMPANY")
                         .requestMatchers(HttpMethod.DELETE,
                                 "/companies",
-                                "/employees/{username}").hasAuthority("SCOPE_COMPANY")
+                                "/employees/{username}",
+                                "/projects/{id}").hasAuthority("SCOPE_COMPANY")
                         .requestMatchers(HttpMethod.GET,
+                                "/adresses",
+                                "/projects",
                                 "/companies",
-                                "/employees",
-                                "/adresses").hasAuthority("SCOPE_COMPANY")
+                                "projects/{id}",
+                                "/employees/{username}",
+                                "/employees").hasAuthority("SCOPE_COMPANY")
                         .requestMatchers(HttpMethod.PUT, "/employees").hasAuthority("SCOPE_EMPLOYEE")
                         .requestMatchers(HttpMethod.GET, "/employees/me").hasAuthority("SCOPE_EMPLOYEE")
                         .anyRequest().authenticated())

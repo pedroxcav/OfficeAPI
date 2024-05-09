@@ -3,6 +3,7 @@ package com.office.api.controller;
 import com.office.api.model.dto.employee.*;
 import com.office.api.service.EmployeeService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -40,7 +41,7 @@ public class EmployeeController {
     }
     @DeleteMapping("/{username}")
     public ResponseEntity<Void> removeEmployee(
-            @PathVariable @Valid String username,
+            @PathVariable @NotBlank String username,
             JwtAuthenticationToken token) {
         employeeService.removeEmployee(username, token);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -49,6 +50,11 @@ public class EmployeeController {
     public ResponseEntity<Set<EmployeeDTO>> getAllEmployees(JwtAuthenticationToken token) {
         Set<EmployeeDTO> allEmployees = employeeService.getAllEmployees(token);
         return ResponseEntity.status(HttpStatus.OK).body(allEmployees);
+    }
+    @GetMapping("/{username}")
+    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable String username, JwtAuthenticationToken token) {
+        EmployeeDTO employee = employeeService.getEmployee(username, token);
+        return ResponseEntity.status(HttpStatus.OK).body(employee);
     }
     @GetMapping("/me")
     public ResponseEntity<EmployeeDTO> getEmployee(JwtAuthenticationToken token) {

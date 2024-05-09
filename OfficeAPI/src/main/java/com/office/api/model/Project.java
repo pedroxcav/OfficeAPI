@@ -27,7 +27,7 @@ public class Project {
     @Column(nullable = false)
     private LocalDate deadline;
     @Column(nullable = false)
-    private boolean status;
+    private boolean active;
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
@@ -35,8 +35,17 @@ public class Project {
     @OneToOne
     @JoinColumn(name = "manager_id", nullable = false)
     private Employee manager;
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private Set<Task> tasks;
     @OneToMany(mappedBy = "project")
     private Set<Team> teams;
+
+    public Project(String name, String description, LocalDate deadline, Company company, Employee manager) {
+        this.name = name;
+        this.description = description;
+        this.active = true;
+        this.deadline = deadline;
+        this.company = company;
+        this.manager = manager;
+    }
 }
