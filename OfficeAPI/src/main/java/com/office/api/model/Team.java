@@ -22,7 +22,7 @@ public class Team {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade =  CascadeType.MERGE)
     private Set<Employee> members;
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -30,4 +30,10 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+    public Team(String name, Company company, Project project) {
+        this.name = name;
+        this.company = company;
+        this.project = project;
+    }
 }

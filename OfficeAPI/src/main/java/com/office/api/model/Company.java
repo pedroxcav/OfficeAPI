@@ -30,7 +30,7 @@ public class Company {
     @Column(nullable = false)
     private Role role;
 
-    @OneToOne(mappedBy = "company", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "company", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private Address address;
     @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
     private Set<Employee> employees;

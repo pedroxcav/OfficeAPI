@@ -37,7 +37,7 @@ public class Project {
     private Employee manager;
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private Set<Task> tasks;
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private Set<Team> teams;
 
     public Project(String name, String description, LocalDate deadline, Company company, Employee manager) {

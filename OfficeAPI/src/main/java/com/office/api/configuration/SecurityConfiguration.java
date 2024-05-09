@@ -40,10 +40,8 @@ public class SecurityConfiguration {
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST,
-                                "/companies",
-                                "/companies/login",
-                                "/employees/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/employees", "/projects").hasAuthority("SCOPE_COMPANY")
+                                "/employees",
+                                "/projects").hasAuthority("SCOPE_COMPANY")
                         .requestMatchers(HttpMethod.PUT,
                                 "/adresses",
                                 "/companies",
@@ -53,6 +51,7 @@ public class SecurityConfiguration {
                                 "/employees/{username}",
                                 "/projects/{id}").hasAuthority("SCOPE_COMPANY")
                         .requestMatchers(HttpMethod.GET,
+                                "/teams",
                                 "/adresses",
                                 "/projects",
                                 "/companies",
@@ -61,6 +60,14 @@ public class SecurityConfiguration {
                                 "/employees").hasAuthority("SCOPE_COMPANY")
                         .requestMatchers(HttpMethod.PUT, "/employees").hasAuthority("SCOPE_EMPLOYEE")
                         .requestMatchers(HttpMethod.GET, "/employees/me").hasAuthority("SCOPE_EMPLOYEE")
+                        .requestMatchers(HttpMethod.POST, "/teams").hasAuthority("SCOPE_MANAGER")
+                        .requestMatchers(HttpMethod.PUT, "/teams/{id}").hasAuthority("SCOPE_MANAGER")
+                        .requestMatchers(HttpMethod.DELETE, "/teams/{id}").hasAuthority("SCOPE_MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/teams/project").hasAuthority("SCOPE_MANAGER")
+                        .requestMatchers(HttpMethod.POST,
+                                "/companies",
+                                "/companies/login",
+                                "/employees/login").permitAll()
                         .anyRequest().authenticated())
                 .build();
     }

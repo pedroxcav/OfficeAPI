@@ -33,7 +33,6 @@ public class Address {
     @OneToOne
     @JoinColumn(
             name = "company_id",
-            nullable = false,
             unique = true)
     private Company company;
 

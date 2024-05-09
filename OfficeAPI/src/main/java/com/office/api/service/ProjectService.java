@@ -42,11 +42,13 @@ public class ProjectService {
         if(optionalManager.isEmpty() || !company.getEmployees().contains(optionalManager.get()))
             throw new NullEmployeeException();
         else if (optionalManager.get().getProject() != null)
-            throw new InvalidManagerException();
+            throw new InvalidEmployeeException("Already manage a project");
 
         Employee manager = optionalManager.get();
-        if(!manager.getRole().equals(Role.MANAGER))
+        if(!manager.getRole().equals(Role.MANAGER)) {
             manager.setRole(Role.MANAGER);
+            manager.setTeam(null);
+        }
 
         Project project = new Project(
                 data.name(),

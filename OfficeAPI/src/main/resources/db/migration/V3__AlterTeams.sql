@@ -1,0 +1,1 @@
+alter table teams add constraint unique (name);
