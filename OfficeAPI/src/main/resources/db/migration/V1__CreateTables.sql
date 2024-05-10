@@ -36,7 +36,7 @@ create table projects (
     deadline date not null,
     status boolean not null,
     company_id binary(16) not null,
-    manager_id binary(16) not null unique
+    manager_id binary(16) unique
 );
 
 create table teams (
@@ -63,18 +63,18 @@ create table comments (
     posted_at datetime not null
 );
 
-alter table employees add foreign key (team_id) references teams (id);
-alter table employees add foreign key (company_id) references companies (id);
+alter table employees add foreign key (team_id) references teams (id) on delete set null on update cascade;
+alter table employees add foreign key (company_id) references companies (id) on delete cascade;
 
-alter table adresses add foreign key (company_id) references companies (id);
+alter table adresses add foreign key (company_id) references companies (id) on delete cascade on update cascade;
 
-alter table projects add foreign key (company_id) references companies (id);
-alter table projects add foreign key (manager_id) references employees (id);
+alter table projects add foreign key (company_id) references companies (id) on delete cascade on update cascade;
+alter table projects add foreign key (manager_id) references employees (id) on delete set null on update cascade;
 
-alter table teams add foreign key (company_id) references companies (id);
-alter table teams add foreign key (project_id) references projects (id);
+alter table teams add foreign key (company_id) references companies (id) on delete cascade on update cascade;
+alter table teams add foreign key (project_id) references projects (id) on delete cascade on update cascade;
 
-alter table tasks add foreign key (project_id) references projects (id);
+alter table tasks add foreign key (project_id) references projects (id) on delete cascade on update cascade;
 
-alter table comments add FOREIGN KEY (owner_id) references employees (id);
-alter table  comments add foreign key (task_id) references tasks (id);
+alter table comments add FOREIGN KEY (owner_id) references employees (id) on delete cascade on update cascade;
+alter table  comments add foreign key (task_id) references tasks (id) on delete cascade on update cascade;

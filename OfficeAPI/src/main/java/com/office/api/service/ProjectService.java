@@ -92,7 +92,6 @@ public class ProjectService {
         if(!company.getProjects().contains(project))
             throw new NullProjectException();
 
-        project.getTeams().forEach(team -> team.setProject(null));
         projectRepository.deleteById(projectId);
     }
     public Set<ProjectDTO> getAllProjects(JwtAuthenticationToken token) {

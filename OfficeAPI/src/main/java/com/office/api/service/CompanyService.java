@@ -3,6 +3,7 @@ package com.office.api.service;
 import com.office.api.exception.LoginFailedException;
 import com.office.api.exception.NullCompanyException;
 import com.office.api.exception.UsedDataException;
+import com.office.api.model.Address;
 import com.office.api.model.Company;
 import com.office.api.model.dto.company.*;
 import com.office.api.repository.CompanyRepository;
@@ -22,13 +23,11 @@ import java.util.UUID;
 public class CompanyService {
     private final JwtEncoder jwtEncoder;
     private final PasswordEncoder encoder;
-    private final AddressService addressService;
     private final CompanyRepository companyRepository;
 
-    public CompanyService(JwtEncoder jwtEncoder, PasswordEncoder encoder, CompanyRepository companyRepository, AddressService addressService) {
+    public CompanyService(JwtEncoder jwtEncoder, PasswordEncoder encoder, CompanyRepository companyRepository) {
         this.encoder = encoder;
         this.jwtEncoder = jwtEncoder;
-        this.addressService = addressService;
         this.companyRepository = companyRepository;
     }
 
@@ -56,12 +55,12 @@ public class CompanyService {
         if(companyRepository.existsByNameOrCnpj(data.name(), data.cnpj()))
             throw new UsedDataException();
 
-        Company company = companyRepository.save(
-                new Company(
-                        data.name(),
-                        data.cnpj(),
-                        encoder.encode(data.password())));
-        addressService.newAddress(data.address(), company);
+        Company company = new Company(
+                data.name(),
+                data.cnpj(),
+                encoder.encode(data.password()));
+        company.setAddress(new Address(data.address(), company));
+        companyRepository.save(company);
     }
     public void updateCompany(UpdateCompanyDTO data, JwtAuthenticationToken token) {
         Company company = this.getCompany(token.getName());

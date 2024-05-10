@@ -4,7 +4,6 @@ import com.office.api.exception.NullCompanyException;
 import com.office.api.model.Address;
 import com.office.api.model.Company;
 import com.office.api.model.dto.address.AddressDTO;
-import com.office.api.model.dto.address.NewAddressDTO;
 import com.office.api.model.dto.address.UpdateAddressDTO;
 import com.office.api.repository.AddressRepository;
 import com.office.api.repository.CompanyRepository;
@@ -23,9 +22,6 @@ public class AddressService {
         this.companyRepository = companyRepository;
     }
 
-    public void newAddress(NewAddressDTO data, Company company) {
-        addressRepository.save(new Address(data, company));
-    }
     public void updateAddress(UpdateAddressDTO data, JwtAuthenticationToken token) {
         UUID companyId = UUID.fromString(token.getName());
         Company company = companyRepository.findById(companyId)

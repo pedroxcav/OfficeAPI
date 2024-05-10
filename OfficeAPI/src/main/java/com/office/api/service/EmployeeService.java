@@ -7,7 +7,6 @@ import com.office.api.model.Company;
 import com.office.api.model.Employee;
 import com.office.api.model.dto.employee.*;
 import com.office.api.repository.EmployeeRepository;
-import com.office.api.repository.ProjectRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -26,14 +25,12 @@ public class EmployeeService {
     private final JwtEncoder jwtEncoder;
     private final PasswordEncoder encoder;
     private final CompanyService companyService;
-    private final ProjectRepository projectRepository;
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeService(JwtEncoder jwtEncoder, PasswordEncoder encoder, CompanyService companyService, EmployeeRepository employeeRepository, ProjectRepository projectRepository) {
+    public EmployeeService(JwtEncoder jwtEncoder, PasswordEncoder encoder, CompanyService companyService, EmployeeRepository employeeRepository) {
         this.encoder = encoder;
         this.jwtEncoder = jwtEncoder;
         this.companyService = companyService;
-        this.projectRepository = projectRepository;
         this.employeeRepository = employeeRepository;
     }
     public LoginResponseDTO login(LoginRequestDTO data) {
@@ -95,11 +92,6 @@ public class EmployeeService {
         if(!company.getEmployees().contains(employee))
             throw new NullEmployeeException();
 
-        if(employee.getProject() != null) {
-            var project = employee.getProject();
-            project.setManager(null);
-            projectRepository.save(project);
-        }
         employeeRepository.delete(employee);
     }
     public Set<EmployeeDTO> getAllEmployees(JwtAuthenticationToken token) {

@@ -82,7 +82,6 @@ public class TeamService {
             throw new NullTeamException();
 
         Team team = optionalTeam.get();
-        team.getMembers().forEach(employee -> employee.setTeam(null));
         teamRepository.delete(team);
     }
     public Set<TeamDTO> getAllTeams(JwtAuthenticationToken token) {
