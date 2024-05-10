@@ -58,16 +58,25 @@ public class SecurityConfiguration {
                                 "projects/{id}",
                                 "/employees/{username}",
                                 "/employees").hasAuthority("SCOPE_COMPANY")
-                        .requestMatchers(HttpMethod.PUT, "/employees").hasAuthority("SCOPE_EMPLOYEE")
-                        .requestMatchers(HttpMethod.GET, "/employees/me").hasAuthority("SCOPE_EMPLOYEE")
-                        .requestMatchers(HttpMethod.POST, "/teams").hasAuthority("SCOPE_MANAGER")
-                        .requestMatchers(HttpMethod.PUT, "/teams/{id}").hasAuthority("SCOPE_MANAGER")
-                        .requestMatchers(HttpMethod.DELETE, "/teams/{id}").hasAuthority("SCOPE_MANAGER")
-                        .requestMatchers(HttpMethod.GET, "/teams/project").hasAuthority("SCOPE_MANAGER")
+                        .requestMatchers(HttpMethod.POST,
+                                "/teams",
+                                "/tasks").hasAuthority("SCOPE_MANAGER")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/teams/{id}",
+                                "/tasks/{id}").hasAuthority("SCOPE_MANAGER")
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/teams/{id}",
+                                "/tasks/{id}").hasAuthority("SCOPE_MANAGER")
+                        .requestMatchers(HttpMethod.GET,
+                                "/tasks",
+                                "/tasks/{id}",
+                                "/teams/project").hasAuthority("SCOPE_MANAGER")
                         .requestMatchers(HttpMethod.POST,
                                 "/companies",
                                 "/companies/login",
                                 "/employees/login").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/employees").hasAuthority("SCOPE_EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET, "/employees/me").hasAuthority("SCOPE_EMPLOYEE")
                         .anyRequest().authenticated())
                 .build();
     }

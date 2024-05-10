@@ -57,6 +57,10 @@ public class ProjectService {
         projectRepository.save(project);
     }
     public void updateProject(Long id, UpdateProjectDTO data, JwtAuthenticationToken token) {
+        Set<Project> usedData = projectRepository.findByName(data.name());
+        if(usedData.stream().anyMatch(project -> !project.getId().equals(id)))
+            throw new UsedDataException();
+
         Company company = companyService.getCompany(token.getName());
 
         Optional<Project> optionalProject = projectRepository.findById(id);

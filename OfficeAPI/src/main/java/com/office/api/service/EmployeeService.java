@@ -116,4 +116,9 @@ public class EmployeeService {
 
         return EmployeeDTO.toDTO(employee);
     }
+    public Employee getEmployee(String employeeId) {
+        UUID id = UUID.fromString(employeeId);
+        return employeeRepository.findById(id)
+                .orElseThrow(NullEmployeeException::new);
+    }
 }

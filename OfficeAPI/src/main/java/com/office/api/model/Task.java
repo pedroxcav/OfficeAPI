@@ -27,7 +27,7 @@ public class Task {
     @Column(nullable = false)
     private LocalDateTime deadline;
     @Column(nullable = false)
-    private boolean status;
+    private boolean active;
 
     @OneToMany(mappedBy = "task")
     private Set<Comment> comments;
@@ -35,4 +35,11 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    public Task(String title, String description, LocalDateTime deadline, Project project) {
+        this.title = title;
+        this.description = description;
+        this.deadline = deadline;
+        this.active = true;
+        this.project = project;
+    }
 }

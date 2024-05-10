@@ -24,7 +24,7 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<Void> newProject(@RequestBody @Valid NewProjectDTO data, JwtAuthenticationToken token) {
         projectService.newProject(data, token);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateProject(@PathVariable Long id, @RequestBody @Valid UpdateProjectDTO data, JwtAuthenticationToken token) {

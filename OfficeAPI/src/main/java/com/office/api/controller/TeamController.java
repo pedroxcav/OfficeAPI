@@ -24,7 +24,7 @@ public class TeamController {
     @PostMapping
     public ResponseEntity<Void> newTeam(@RequestBody @Valid NewTeamDTO data, JwtAuthenticationToken token) {
         teamService.newTeam(data, token);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateTeam(@PathVariable Long id,

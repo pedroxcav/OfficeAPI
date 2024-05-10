@@ -19,24 +19,24 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 public class TeamService {
     private final TeamRepository teamRepository;
     private final EmployeeRepository employeeRepository;
     private final CompanyService companyService;
+    private final EmployeeService employeeService;
 
-    public TeamService(TeamRepository teamRepository, EmployeeRepository employeeRepository, CompanyService companyService) {
+    public TeamService(TeamRepository teamRepository, EmployeeRepository employeeRepository, CompanyService companyService, EmployeeService employeeService) {
         this.teamRepository = teamRepository;
         this.employeeRepository = employeeRepository;
         this.companyService = companyService;
+        this.employeeService = employeeService;
     }
 
     public void newTeam(NewTeamDTO data, JwtAuthenticationToken token) {
-        UUID managerId = UUID.fromString(token.getName());
-        Employee manager = employeeRepository.findById(managerId)
-                .orElseThrow(NullEmployeeException::new);
+        Employee manager = employeeService.getEmployee(token.getName());
+
         if(teamRepository.existsByName(data.name())) throw new UsedDataException();
 
         Team team = new Team(
@@ -59,24 +59,28 @@ public class TeamService {
         teamRepository.save(team);
     }
     public void updateTeam (Long id, UpdateTeamDTO data, JwtAuthenticationToken token) {
-        if(teamRepository.existsByName(data.name())) throw new UsedDataException();
-        Optional<Team> optionalTeam = teamRepository.findById(id);
-        UUID managerId = UUID.fromString(token.getName());
-        Employee manager = employeeRepository.findById(managerId)
-                .orElseThrow(NullEmployeeException::new);
+        Employee manager = employeeService.getEmployee(token.getName());
 
+        Optional<Team> optionalTeam = teamRepository.findById(id);
         if(optionalTeam.isEmpty() || !manager.getCompany().equals(optionalTeam.get().getCompany()))
             throw new NullTeamException();
-
         Team team = optionalTeam.get();
+
+        Set<Team> usedData = teamRepository.findByName(data.name());
+        if(usedData.stream().anyMatch(teamValue -> !teamValue.getId().equals(id)))
+            throw new UsedDataException();
+
+        Set<Employee> employeesToAdd = this.getAvailableToAdd(data.to_add(), team);
+        Set<Employee> employeesToRemove = this.getAvailableToRemove(data.to_remove(), team);
+
         team.setName(data.name());
+        team.getMembers().addAll(employeesToAdd);
+        team.getMembers().removeAll(employeesToRemove);
         teamRepository.save(team);
     }
     public void deleteTeam(Long id, JwtAuthenticationToken token) {
         Optional<Team> optionalTeam = teamRepository.findById(id);
-        UUID managerId = UUID.fromString(token.getName());
-        Employee manager = employeeRepository.findById(managerId)
-                .orElseThrow(NullEmployeeException::new);
+        Employee manager = employeeService.getEmployee(token.getName());
 
         if(optionalTeam.isEmpty() || !manager.getCompany().equals(optionalTeam.get().getCompany()))
             throw new NullTeamException();
@@ -90,11 +94,41 @@ public class TeamService {
         return TeamDTO.toDTOList(teams);
     }
     public Set<TeamDTO> getTeams(JwtAuthenticationToken token) {
-        UUID managerId = UUID.fromString(token.getName());
-        Employee manager = employeeRepository.findById(managerId)
-                .orElseThrow(NullEmployeeException::new);
+        Employee manager = employeeService.getEmployee(token.getName());
 
         Set<Team> teams = manager.getProject().getTeams();
         return TeamDTO.toDTOList(teams);
+    }
+
+    private Set<Employee> getAvailableToAdd(Set<String> data, Team team) {
+        Set<Employee> toAdd = new HashSet<>();
+        data.forEach(username -> {
+            Optional<Employee> optionalEmployee = employeeRepository.findByUsername(username);
+            if(optionalEmployee.isEmpty() || !optionalEmployee.get().getCompany().equals(team.getCompany()))
+                throw new NullEmployeeException();
+
+            Employee employee = optionalEmployee.get();
+            if(employee.getTeam() != null)
+                throw new InvalidEmployeeException("Already on a team");
+            else if(employee.getRole().equals(Role.MANAGER))
+                throw new InvalidEmployeeException("Manager can not be part of the team");
+
+            employee.setTeam(team);
+            toAdd.add(employee);
+        });
+        return toAdd;
+    }
+    private Set<Employee> getAvailableToRemove(Set<String> data, Team team) {
+        Set<Employee> toRemove = new HashSet<>();
+        data.forEach(username -> {
+            Employee employee = employeeRepository.findByUsername(username)
+                    .orElseThrow(NullEmployeeException::new);
+            if(!employee.getTeam().equals(team))
+                throw new InvalidEmployeeException("Does not exist in the team");
+
+            employee.setTeam(null);
+            toRemove.add(employee);
+        });
+        return toRemove;
     }
 }
