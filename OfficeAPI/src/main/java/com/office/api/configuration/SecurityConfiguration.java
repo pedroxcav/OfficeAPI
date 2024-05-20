@@ -97,13 +97,13 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
     @Bean
+    public JwtDecoder decoder() {
+        return NimbusJwtDecoder.withPublicKey(publicKey).build();
+    }
+    @Bean
     public JwtEncoder encoder() {
         JWK jwk = new RSAKey.Builder(publicKey).privateKey(privateKey).build();
         var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
-    }
-    @Bean
-    public JwtDecoder decoder() {
-        return NimbusJwtDecoder.withPublicKey(publicKey).build();
     }
 }
