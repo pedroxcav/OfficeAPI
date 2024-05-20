@@ -1,0 +1,1 @@
+alter table comments modify column posted_at datetime not null default current_timestamp;

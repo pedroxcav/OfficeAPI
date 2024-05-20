@@ -32,4 +32,10 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
+
+    public Comment(String content, Employee owner, Task task) {
+        this.content = content;
+        this.owner = owner;
+        this.task = task;
+    }
 }

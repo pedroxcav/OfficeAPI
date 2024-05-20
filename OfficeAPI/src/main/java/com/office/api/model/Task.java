@@ -29,7 +29,7 @@ public class Task {
     @Column(nullable = false)
     private boolean active;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
     private Set<Comment> comments;
     @ManyToOne
     @JoinColumn(name = "project_id")

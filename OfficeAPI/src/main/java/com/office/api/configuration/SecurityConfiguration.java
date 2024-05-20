@@ -55,9 +55,10 @@ public class SecurityConfiguration {
                                 "/adresses",
                                 "/projects",
                                 "/companies",
-                                "projects/{id}",
+                                "/projects/{id}",
                                 "/employees/{username}",
                                 "/employees").hasAuthority("SCOPE_COMPANY")
+
                         .requestMatchers(HttpMethod.POST,
                                 "/teams",
                                 "/tasks").hasAuthority("SCOPE_MANAGER")
@@ -70,13 +71,24 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,
                                 "/tasks",
                                 "/tasks/{id}",
+                                "/comments/{id}",
                                 "/teams/project").hasAuthority("SCOPE_MANAGER")
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/comments/{id}").hasAuthority("SCOPE_EMPLOYEE")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/employees",
+                                "/comments/{id}").hasAuthority("SCOPE_EMPLOYEE")
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/comments/{id}").hasAuthority("SCOPE_EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET,
+                                "/comments",
+                                "/employees/me").hasAuthority("SCOPE_EMPLOYEE")
+
                         .requestMatchers(HttpMethod.POST,
                                 "/companies",
                                 "/companies/login",
                                 "/employees/login").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/employees").hasAuthority("SCOPE_EMPLOYEE")
-                        .requestMatchers(HttpMethod.GET, "/employees/me").hasAuthority("SCOPE_EMPLOYEE")
                         .anyRequest().authenticated())
                 .build();
     }
