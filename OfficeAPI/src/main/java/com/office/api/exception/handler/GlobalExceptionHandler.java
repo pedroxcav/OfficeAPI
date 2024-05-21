@@ -16,21 +16,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     @ExceptionHandler(LoginFailedException.class)
-    public ResponseEntity<ExceptionDTO> handleLoginFailedException(LoginFailedException exception) {
+    public ResponseEntity<ExceptionDTO> handleLoginFailedException(RuntimeException exception) {
         ExceptionDTO exceptionDTO = new ExceptionDTO(HttpStatus.FORBIDDEN.value(),
                 HttpStatus.FORBIDDEN, "Access Forbidden", exception.getMessage(),
                 formatter.format(LocalDateTime.now()));
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionDTO);
     }
     @ExceptionHandler(UsedDataException.class)
-    public ResponseEntity<ExceptionDTO> handleUsedDataException(UsedDataException exception) {
+    public ResponseEntity<ExceptionDTO> handleUsedDataException(RuntimeException exception) {
         ExceptionDTO exceptionDTO = new ExceptionDTO(HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST, "Provided Information", exception.getMessage(),
                 formatter.format(LocalDateTime.now()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionDTO);
     }
     @ExceptionHandler({InvalidEmployeeException.class, InvalidDeadlineException.class})
-    public ResponseEntity<ExceptionDTO> handleInvalidException(InvalidEmployeeException exception) {
+    public ResponseEntity<ExceptionDTO> handleInvalidException(RuntimeException exception) {
         ExceptionDTO exceptionDTO = new ExceptionDTO(HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST, "Invalid Data", exception.getMessage(),
                 formatter.format(LocalDateTime.now()));
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             NullCommentException.class,
             NullCompanyException.class,
             NullEmployeeException.class})
-    public ResponseEntity<ExceptionDTO> handleNullException(Exception exception) {
+    public ResponseEntity<ExceptionDTO> handleNullException(RuntimeException exception) {
         ExceptionDTO exceptionDTO = new ExceptionDTO(HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND, "Non-existent Information", exception.getMessage(),
                 formatter.format(LocalDateTime.now()));

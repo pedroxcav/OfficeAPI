@@ -27,7 +27,7 @@ public class Task {
     @Column(nullable = false)
     private LocalDateTime deadline;
     @Column(nullable = false)
-    private boolean active;
+    private boolean expired;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
     private Set<Comment> comments;
@@ -39,7 +39,7 @@ public class Task {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
-        this.active = true;
+        this.expired = false;
         this.project = project;
     }
 }

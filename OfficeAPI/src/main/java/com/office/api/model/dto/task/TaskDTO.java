@@ -22,7 +22,7 @@ public record TaskDTO(
                 task.getTitle(),
                 task.getDescription(),
                 formatter.format(task.getDeadline()),
-                task.isActive(),
+                task.isExpired(),
                 CommentDTO.toDTOList(task.getComments()));
     }
     public static Set<TaskDTO> toDTOList(Set<Task> tasks) {

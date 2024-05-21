@@ -20,7 +20,7 @@ public record ProjectDTO(
                 project.getDescription(),
                 project.getManager().getUsername(),
                 formatter.format(project.getDeadline()),
-                project.isActive());
+                project.isExpired());
     }
 
     public static Set<ProjectDTO> toDTOList(Set<Project> projects) {

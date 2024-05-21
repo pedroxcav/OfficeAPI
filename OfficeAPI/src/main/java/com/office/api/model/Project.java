@@ -27,7 +27,7 @@ public class Project {
     @Column(nullable = false)
     private LocalDate deadline;
     @Column(nullable = false)
-    private boolean active;
+    private boolean expired;
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
@@ -43,7 +43,7 @@ public class Project {
     public Project(String name, String description, LocalDate deadline, Company company, Employee manager) {
         this.name = name;
         this.description = description;
-        this.active = true;
+        this.expired = false;
         this.deadline = deadline;
         this.company = company;
         this.manager = manager;
