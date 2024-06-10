@@ -79,11 +79,7 @@ public class CompanyService {
         companyRepository.delete(company);
     }
     public CompanyDTO getCompany(JwtAuthenticationToken token) {
-        System.out.println(token.getName());
-        UUID companyId = UUID.fromString(token.getName());
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(NullCompanyException::new);
-        return CompanyDTO.toDTO(company);
+        return CompanyDTO.toDTO(this.getCompany(token.getName()));
     }
     public Company getCompany(String companyId) {
         return companyRepository.findById(UUID.fromString(companyId))

@@ -87,8 +87,8 @@ public class ProjectService {
 
         projectRepository.save(project);
     }
-    public void deleteProject(Long projectId, JwtAuthenticationToken token) {
-        Project project = projectRepository.findById(projectId)
+    public void deleteProject(Long id, JwtAuthenticationToken token) {
+        Project project = projectRepository.findById(id)
                 .orElseThrow(NullProjectException::new);
 
         Company company = companyService.getCompany(token.getName());
@@ -96,7 +96,7 @@ public class ProjectService {
         if(!company.getProjects().contains(project))
             throw new NullProjectException();
 
-        projectRepository.deleteById(projectId);
+        projectRepository.deleteById(id);
     }
     public Set<ProjectDTO> getAllProjects(JwtAuthenticationToken token) {
         Company company = companyService.getCompany(token.getName());

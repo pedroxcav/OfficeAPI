@@ -1,31 +1,25 @@
 package com.office.api.service;
 
-import com.office.api.exception.NullCompanyException;
 import com.office.api.model.Address;
 import com.office.api.model.Company;
 import com.office.api.model.dto.address.AddressDTO;
 import com.office.api.model.dto.address.UpdateAddressDTO;
 import com.office.api.repository.AddressRepository;
-import com.office.api.repository.CompanyRepository;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class AddressService {
     private final AddressRepository addressRepository;
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
 
-    public AddressService(AddressRepository addressRepository, CompanyRepository companyRepository) {
+    public AddressService(AddressRepository addressRepository, CompanyService companyService) {
         this.addressRepository = addressRepository;
-        this.companyRepository = companyRepository;
+        this.companyService = companyService;
     }
 
     public void updateAddress(UpdateAddressDTO data, JwtAuthenticationToken token) {
-        UUID companyId = UUID.fromString(token.getName());
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(NullCompanyException::new);
+        Company company = companyService.getCompany(token.getName());
 
         Address address = company.getAddress();
         address.setZipCode(data.zipCode());
@@ -38,9 +32,7 @@ public class AddressService {
         addressRepository.save(address);
     }
     public AddressDTO getAddress(JwtAuthenticationToken token) {
-        UUID companyId = UUID.fromString(token.getName());
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(NullCompanyException::new);
+        Company company = companyService.getCompany(token.getName());
 
         Address address = company.getAddress();
         return AddressDTO.toDTO(address);
