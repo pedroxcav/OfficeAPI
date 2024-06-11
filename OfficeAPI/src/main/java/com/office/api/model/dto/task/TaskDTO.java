@@ -12,7 +12,7 @@ public record TaskDTO(
         String title,
         String description,
         String deadline,
-        boolean status,
+        boolean is_expired,
         Set<CommentDTO> comments) {
 
     public static TaskDTO toDTO(Task task) {

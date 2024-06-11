@@ -11,7 +11,7 @@ public record ProjectDTO(
         String description,
         String manager_username,
         String deadline,
-        boolean status) {
+        boolean is_expired) {
 
     public static ProjectDTO toDTO(Project project) {
         var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

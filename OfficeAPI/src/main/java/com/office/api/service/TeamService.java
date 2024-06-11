@@ -70,8 +70,8 @@ public class TeamService {
         if(usedData.stream().anyMatch(teamValue -> !teamValue.getId().equals(id)))
             throw new UsedDataException();
 
-        Set<Employee> employeesToAdd = this.getAvailableToAdd(data.to_add(), team);
-        Set<Employee> employeesToRemove = this.getAvailableToRemove(data.to_remove(), team);
+        Set<Employee> employeesToAdd = this.filterToAdd(data.to_add(), team);
+        Set<Employee> employeesToRemove = this.filterToRemove(data.to_remove(), team);
 
         team.setName(data.name());
         team.getMembers().addAll(employeesToAdd);
@@ -100,7 +100,7 @@ public class TeamService {
         return TeamDTO.toDTOList(teams);
     }
 
-    private Set<Employee> getAvailableToAdd(Set<String> data, Team team) {
+    private Set<Employee> filterToAdd(Set<String> data, Team team) {
         Set<Employee> toAdd = new HashSet<>();
         data.forEach(username -> {
             Optional<Employee> optionalEmployee = employeeRepository.findByUsername(username);
@@ -118,7 +118,7 @@ public class TeamService {
         });
         return toAdd;
     }
-    private Set<Employee> getAvailableToRemove(Set<String> data, Team team) {
+    private Set<Employee> filterToRemove(Set<String> data, Team team) {
         Set<Employee> toRemove = new HashSet<>();
         data.forEach(username -> {
             Employee employee = employeeRepository.findByUsername(username)
