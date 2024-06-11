@@ -15,7 +15,7 @@ The Office API was developed to able companies to manage their own business bett
 - Using Spring Validation
 
 ### Downloads 📥
-Before you start, you need to have this installed:
+Before you start, you need this installed:
 - Versioning Software [Downlaod GIT](https://git-scm.com/downloads)
 - Java Language [Download Java SDK](https://www.oracle.com/br/java/technologies/downloads/)
 - MySQL Database [Download MySQL](https://dev.mysql.com/downloads/)
