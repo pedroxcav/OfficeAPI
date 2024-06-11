@@ -69,7 +69,6 @@ public class SecurityConfiguration {
                                 "/teams/{id}",
                                 "/tasks/{id}").hasAuthority("SCOPE_MANAGER")
                         .requestMatchers(HttpMethod.GET,
-                                "/tasks",
                                 "/tasks/{id}",
                                 "/comments/{id}",
                                 "/teams/project").hasAuthority("SCOPE_MANAGER")
@@ -82,6 +81,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE,
                                 "/comments/{id}").hasAuthority("SCOPE_EMPLOYEE")
                         .requestMatchers(HttpMethod.GET,
+                                "/tasks",
                                 "/comments",
                                 "/employees/me").hasAuthority("SCOPE_EMPLOYEE")
 

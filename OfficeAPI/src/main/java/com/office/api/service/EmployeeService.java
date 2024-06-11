@@ -6,6 +6,7 @@ import com.office.api.exception.UsedDataException;
 import com.office.api.model.Company;
 import com.office.api.model.Employee;
 import com.office.api.model.dto.employee.*;
+import com.office.api.model.enums.Role;
 import com.office.api.repository.EmployeeRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -42,11 +43,15 @@ public class EmployeeService {
         var expiresIn = 86400L;
         var now = Instant.now();
 
+        var roles = employee.getRole().equals(Role.MANAGER)?
+                Set.of(Role.MANAGER, Role.EMPLOYEE):
+                Set.of(Role.EMPLOYEE);
+
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("office.api")
                 .subject(employee.getId().toString())
                 .expiresAt(now.plusSeconds(expiresIn))
-                .claim("scope", employee.getRole())
+                .claim("scope", roles)
                 .issuedAt(now)
                 .build();
 

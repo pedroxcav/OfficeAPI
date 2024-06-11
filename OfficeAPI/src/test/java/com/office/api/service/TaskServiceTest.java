@@ -1,6 +1,7 @@
 package com.office.api.service;
 
 import com.office.api.exception.InvalidDeadlineException;
+import com.office.api.exception.NullProjectException;
 import com.office.api.exception.NullTaskException;
 import com.office.api.exception.UsedDataException;
 import com.office.api.model.Employee;
@@ -9,6 +10,7 @@ import com.office.api.model.Task;
 import com.office.api.model.dto.task.NewTaskDTO;
 import com.office.api.model.dto.task.TaskDTO;
 import com.office.api.model.dto.task.UpdateTaskDTO;
+import com.office.api.model.enums.Role;
 import com.office.api.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -249,17 +251,18 @@ class TaskServiceTest {
 
     @Test
     @DisplayName("Get Tasks Successfully")
-    void getTasks() {
+    void getTasks_successful() {
         var token = mock(JwtAuthenticationToken.class);
-        Employee manager = mock(Employee.class);
+        Employee employee = mock(Employee.class);
         Project project = mock(Project.class);
         Task task = mock(Task.class);
         Set<Task> tasks = new HashSet<>() {{
             add(task);
         }};
 
-        when(employeeService.getEmployee(token.getName())).thenReturn(manager);
-        when(manager.getProject()).thenReturn(project);
+        when(employeeService.getEmployee(token.getName())).thenReturn(employee);
+        when(employee.getRole()).thenReturn(Role.MANAGER);
+        when(employee.getProject()).thenReturn(project);
         when(project.getTasks()).thenReturn(tasks);
         when(task.getDeadline()).thenReturn(LocalDateTime.now().plusDays(1L));
         when(task.getComments()).thenReturn(new HashSet<>());
@@ -267,6 +270,20 @@ class TaskServiceTest {
         Set<TaskDTO> taskDTOs = assertDoesNotThrow(() -> taskService.getTasks(token));
 
         assertEquals(1, taskDTOs.size());
+        verify(employeeService, times(1)).getEmployee(token.getName());
+    }
+    @Test
+    @DisplayName("Get Tasks Unsuccessfully")
+    void getTasks_unsuccessful() {
+        var token = mock(JwtAuthenticationToken.class);
+        Employee employee = mock(Employee.class);
+
+        when(employeeService.getEmployee(token.getName())).thenReturn(employee);
+        when(employee.getRole()).thenReturn(Role.MANAGER);
+        when(employee.getProject()).thenReturn(null);
+
+        assertThrows(NullProjectException.class, () -> taskService.getTasks(token));
+
         verify(employeeService, times(1)).getEmployee(token.getName());
     }
 

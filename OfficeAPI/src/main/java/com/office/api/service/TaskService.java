@@ -1,6 +1,7 @@
 package com.office.api.service;
 
 import com.office.api.exception.InvalidDeadlineException;
+import com.office.api.exception.NullProjectException;
 import com.office.api.exception.NullTaskException;
 import com.office.api.exception.UsedDataException;
 import com.office.api.model.Employee;
@@ -9,6 +10,7 @@ import com.office.api.model.Task;
 import com.office.api.model.dto.task.NewTaskDTO;
 import com.office.api.model.dto.task.TaskDTO;
 import com.office.api.model.dto.task.UpdateTaskDTO;
+import com.office.api.model.enums.Role;
 import com.office.api.repository.TaskRepository;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -77,10 +79,21 @@ public class TaskService {
         taskRepository.delete(task);
     }
     public Set<TaskDTO> getTasks(JwtAuthenticationToken token) {
-        Employee manager = employeeService.getEmployee(token.getName());
-        Project project = manager.getProject();
+        Project project;
+        Set<Task> tasks;
+        Employee employee = employeeService.getEmployee(token.getName());
 
-        Set<Task> tasks = project.getTasks();
+        try {
+            if (employee.getRole().equals(Role.MANAGER))
+                project = employee.getProject();
+            else
+                project = employee.getTeam().getProject();
+
+        tasks = project.getTasks();
+        } catch(NullPointerException e) {
+            throw new NullProjectException("You aren't working on a Project");
+        }
+
         return TaskDTO.toDTOList(tasks);
     }
     public TaskDTO getTask(Long id, JwtAuthenticationToken token) {

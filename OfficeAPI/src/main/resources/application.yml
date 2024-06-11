@@ -12,7 +12,7 @@ spring:
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-#Create your own pair of keys in ('/src/main/resources') using OpenSSL in the terminal!
+#Create your own pair of keys in ('src/main/resources') using OpenSSL in the terminal!
 jwt:
   #openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
   private:
