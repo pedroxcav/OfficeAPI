@@ -7,7 +7,7 @@ spring:
   jpa:
     show-sql: true
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/db_office
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/office_database
     username: root
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
