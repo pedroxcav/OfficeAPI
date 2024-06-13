@@ -3,9 +3,7 @@ package com.office.api.model.dto.comment;
 import com.office.api.model.Comment;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public record CommentDTO(Long id,
@@ -25,7 +23,6 @@ public record CommentDTO(Long id,
         return comments.stream()
                 .map(CommentDTO::toDTO)
                 .sorted(Comparator.comparing(CommentDTO::posted_at))
-                .collect(Collectors.toCollection(LinkedHashSet::new))
-                .reversed();
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
