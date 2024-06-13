@@ -19,10 +19,12 @@ public record CommentDTO(Long id,
                 formatter.format(comment.getPostedAt()),
                 comment.getOwner().getUsername());
     }
-    public static Set<CommentDTO> toDTOList(Set<Comment> comments) {
-        return comments.stream()
+    public static List<CommentDTO> toDTOList(Set<Comment> comments) {
+        var commentList = comments.stream()
                 .map(CommentDTO::toDTO)
                 .sorted(Comparator.comparing(CommentDTO::posted_at))
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+                .collect(Collectors.toCollection(ArrayList::new));
+        Collections.reverse(commentList);
+        return commentList;
     }
 }

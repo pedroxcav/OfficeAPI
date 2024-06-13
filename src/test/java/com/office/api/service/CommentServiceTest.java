@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -230,7 +231,7 @@ class CommentServiceTest {
         when(taskRepository.findById(id)).thenReturn(Optional.of(task));
         when(employeeService.getEmployee(token.getName())).thenReturn(manager);
 
-        Set<CommentDTO> allComments = commentService.getAllComments(id, token);
+        List<CommentDTO> allComments = commentService.getAllComments(id, token);
 
         assertEquals(1, allComments.size());
 
@@ -284,7 +285,7 @@ class CommentServiceTest {
         when(comment.getPostedAt()).thenReturn(LocalDateTime.now());
         when(employeeService.getEmployee(token.getName())).thenReturn(employee);
 
-        Set<CommentDTO> comments = commentService.getComments(token);
+        List<CommentDTO> comments = commentService.getComments(token);
 
         assertEquals(1, comments.size());
 

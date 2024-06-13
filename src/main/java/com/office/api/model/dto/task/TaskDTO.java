@@ -4,6 +4,7 @@ import com.office.api.model.Task;
 import com.office.api.model.dto.comment.CommentDTO;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,7 @@ public record TaskDTO(
         String description,
         String deadline,
         boolean is_expired,
-        Set<CommentDTO> comments) {
+        List<CommentDTO> comments) {
 
     public static TaskDTO toDTO(Task task) {
         var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

@@ -13,6 +13,7 @@ import com.office.api.repository.TaskRepository;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -56,7 +57,7 @@ public class CommentService {
 
         commentRepository.delete(comment);
     }
-    public Set<CommentDTO> getAllComments(Long id, JwtAuthenticationToken token) {
+    public List<CommentDTO> getAllComments(Long id, JwtAuthenticationToken token) {
         Employee manager = employeeService.getEmployee(token.getName());
         Task task = taskRepository.findById(id).orElseThrow(NullTaskException::new);
 
@@ -66,7 +67,7 @@ public class CommentService {
         Set<Comment> comments = task.getComments();
         return CommentDTO.toDTOList(comments);
     }
-    public Set<CommentDTO> getComments(JwtAuthenticationToken token) {
+    public List<CommentDTO> getComments(JwtAuthenticationToken token) {
         Employee employee = employeeService.getEmployee(token.getName());
 
         Set<Comment> comments = employee.getComments();

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
@@ -43,13 +43,13 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Set<CommentDTO>> getAllComments(@PathVariable Long id, JwtAuthenticationToken token) {
-        Set<CommentDTO> allComments = commentService.getAllComments(id, token);
+    public ResponseEntity<List<CommentDTO>> getAllComments(@PathVariable Long id, JwtAuthenticationToken token) {
+        List<CommentDTO> allComments = commentService.getAllComments(id, token);
         return ResponseEntity.status(HttpStatus.OK).body(allComments);
     }
     @GetMapping
-    public ResponseEntity<Set<CommentDTO>> getComments(JwtAuthenticationToken token) {
-        Set<CommentDTO> comments = commentService.getComments(token);
+    public ResponseEntity<List<CommentDTO>> getComments(JwtAuthenticationToken token) {
+        List<CommentDTO> comments = commentService.getComments(token);
         return ResponseEntity.status(HttpStatus.OK).body(comments);
     }
 }
