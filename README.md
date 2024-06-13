@@ -90,9 +90,6 @@ Information of endpoints and planning the API
 
     6. GET /employees/me
     # employee requires own profile
-
-    7. GET /employees/{username}
-    # returns a specific employee
 </details>
 <details>
   <summary>Address Controller</summary>
