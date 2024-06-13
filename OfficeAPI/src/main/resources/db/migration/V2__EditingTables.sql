@@ -1,9 +1,9 @@
-alter table projects add constraint unique (name);
-alter table projects change status expired boolean not null default false;
+alter table projects add unique (name);
+alter table projects rename column status to expired;
 
-alter table teams add constraint unique (name);
+alter table teams add unique (name);
 
-alter table tasks add constraint unique (title);
-alter table tasks change status expired boolean not null default false;
+alter table tasks add unique (title);
+alter table tasks rename column status to expired;
 
-alter table comments modify column posted_at datetime not null default now();
+alter table comments alter column posted_at set default now();

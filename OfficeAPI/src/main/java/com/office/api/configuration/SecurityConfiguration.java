@@ -4,7 +4,6 @@ import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,16 +20,21 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.security.interfaces.RSAPrivateKey;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+
+import static java.util.Base64.getMimeDecoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    @Value("${jwt.public.key}")
-    private RSAPublicKey publicKey;
-    @Value("${jwt.private.key}")
-    private RSAPrivateKey privateKey;
+    private final String publicKey = System.getenv("PUBLIC_KEY");
+    private final String privateKey = System.getenv("PRIVATE_KEY");
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -56,7 +60,6 @@ public class SecurityConfiguration {
                                 "/projects",
                                 "/companies",
                                 "/projects/{id}",
-                                "/employees/{username}",
                                 "/employees").hasAuthority("SCOPE_COMPANY")
 
                         .requestMatchers(HttpMethod.POST,
@@ -97,12 +100,23 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    public JwtDecoder decoder() {
-        return NimbusJwtDecoder.withPublicKey(publicKey).build();
+    public JwtDecoder decoder() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(getMimeDecoder().decode(publicKey));
+        RSAPublicKey pubKey = (RSAPublicKey) kf.generatePublic(keySpecX509);
+
+        return NimbusJwtDecoder.withPublicKey(pubKey).build();
     }
     @Bean
-    public JwtEncoder encoder() {
-        JWK jwk = new RSAKey.Builder(publicKey).privateKey(privateKey).build();
+    public JwtEncoder encoder() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(getMimeDecoder().decode(privateKey));
+        PrivateKey privKey = kf.generatePrivate(keySpecPKCS8);
+
+        X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(getMimeDecoder().decode(publicKey));
+        RSAPublicKey pubKey = (RSAPublicKey) kf.generatePublic(keySpecX509);
+
+        JWK jwk = new RSAKey.Builder(pubKey).privateKey(privKey).build();
         var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }

@@ -51,11 +51,6 @@ public class EmployeeController {
         Set<EmployeeDTO> allEmployees = employeeService.getAllEmployees(token);
         return ResponseEntity.status(HttpStatus.OK).body(allEmployees);
     }
-    @GetMapping("/{username}")
-    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable String username, JwtAuthenticationToken token) {
-        EmployeeDTO employee = employeeService.getEmployee(username, token);
-        return ResponseEntity.status(HttpStatus.OK).body(employee);
-    }
     @GetMapping("/me")
     public ResponseEntity<EmployeeDTO> getEmployee(JwtAuthenticationToken token) {
         EmployeeDTO employee = employeeService.getEmployee(token);

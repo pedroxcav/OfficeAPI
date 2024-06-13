@@ -255,43 +255,6 @@ class EmployeeServiceTest {
     }
 
     @Test
-    @DisplayName("Company Gets Employee Successfully")
-    void getEmployee_company_successful() {
-        String username = "Test Username";
-        var token = mock(JwtAuthenticationToken.class);
-        Company company = mock(Company.class);
-        Employee employee = mock(Employee.class);
-        Set<Employee> employees = new HashSet<>(){{add(employee);}};
-
-        when(employee.getCompany()).thenReturn(company);
-        when(company.getName()).thenReturn("Test Name");
-        when(company.getEmployees()).thenReturn(employees);
-        when(companyService.getCompany(token.getName())).thenReturn(company);
-        when(employeeRepository.findByUsername(username)).thenReturn(Optional.of(employee));
-
-        EmployeeDTO employeeDTO = assertDoesNotThrow(() -> employeeService.getEmployee(username, token));
-
-        assertNotNull(employeeDTO);
-        verify(companyService, times(1)).getCompany(token.getName());
-        verify(employeeRepository, times(1)).findByUsername(username);
-    }
-    @Test
-    @DisplayName("Company Gets Employee Unsuccessfully")
-    void getEmployee_company_unsuccessful() {
-        String username = "Test Username";
-        var token = mock(JwtAuthenticationToken.class);
-        Company company = mock(Company.class);
-
-        when(companyService.getCompany(token.getName())).thenReturn(company);
-        when(employeeRepository.findByUsername(username)).thenReturn(Optional.empty());
-
-        assertThrows(NullEmployeeException.class, () -> employeeService.getEmployee(username, token));
-
-        verify(companyService, times(1)).getCompany(token.getName());
-        verify(employeeRepository, times(1)).findByUsername(username);
-    }
-
-    @Test
     @DisplayName("Employee Gets Employee Unsuccessfully")
     void getEmployee_employee_successful() {
         UUID id = UUID.randomUUID();

@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -104,15 +103,6 @@ public class EmployeeService {
 
         Set<Employee> employees = company.getEmployees();
         return EmployeeDTO.toDTOList(employees);
-    }
-    public EmployeeDTO getEmployee(String username, JwtAuthenticationToken token) {
-        Company company = companyService.getCompany(token.getName());
-        Optional<Employee> optionalEmployee = employeeRepository.findByUsername(username);
-
-        if(optionalEmployee.isEmpty() || !company.getEmployees().contains(optionalEmployee.get()))
-            throw new NullEmployeeException();
-
-        return EmployeeDTO.toDTO(optionalEmployee.get());
     }
     public EmployeeDTO getEmployee(JwtAuthenticationToken token) {
         UUID employeeId = UUID.fromString(token.getName());
