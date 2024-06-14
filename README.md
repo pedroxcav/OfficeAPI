@@ -27,43 +27,68 @@ But even though the API is already deployed and hosted on Render, you steel choo
 
 ### Configuration ⚙️
 Before you start, you need this installed:
-- Versioning Software [Downlaod GIT](https://git-scm.com/downloads)
-- Java Language [Download Java SDK](https://www.oracle.com/br/java/technologies/downloads/)
+- HTTP Client [Download Postman](https://www.postman.com/downloads/)
 - Code Editor IDE [Download Intelij](https://www.jetbrains.com/idea/download/?section=windows)
 - Cryptography [Download OpenSSL](https://sourceforge.net/projects/openssl/)
-- PostgreSQL Database [Download Postgre](https://www.postgresql.org/download/)
+- Versioning Software [Downlaod GIT](https://git-scm.com/downloads)
+- Java Language [Download Java SDK](https://www.oracle.com/br/java/technologies/downloads/)
 - Dependency Manager [Download Maven](https://maven.apache.org/download.cgi)
-- HTTP Client [Download Postman](https://www.postman.com/downloads/)
-### Settings ⚙️
+- PostgreSQL Database [Download Postgre](https://www.postgresql.org/download/)
+
 Define your system environment variables:
+
+- PUBLIC_KEY
+- PRIVATE_KEY
+```bash
+# generate private key:
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+# generate public key:
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+
+# copy the content into the variables
+```
+- DATABASE_URL
+- DATABASE_USERNAME
+- DATABASE_PASSWORD
 - Maven, OpenSSL and GIT
 
 After it, open command prompt and follow:
 ```bash
-# select one of your folders
-cd pathone/pathtwo/folder
-
 # clone the repository
 git clone https://github.com/pedroxcav/OfficeAPI.git
 
-# select the resources folder
-cd OfficeAPI/src/main/resources
+# select the project folder
+cd OfficeAPI
 
-#create public/private keys
-openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
-
-openssl rsa -pubout -in private_key.pem -out public_key.pem
-
-#then return to
-cd ../../../
+# test the application
+mvn test
 
 # run the application
 mvn exec:java
 # press (ctrl + c) to stop
 ```
-### Documentation 📝
+### Documentation 📋
 Information of endpoints and planning the API
 #### Endpoints
+
+<details>
+  <summary>Comment Controller</summary>
+
+    1. POST /comments/{task_id}
+    # creates a new comment
+
+    2. PUT /comments/{id}
+    # updates a comment
+
+    3. DELETE /comments/{id}
+    # deletes a comment
+    
+    4. GET /comments/{id}
+    # get a specific comment
+    
+    5. GET /comments
+    # get all its comments
+</details>
 <details>
   <summary>Company Controller</summary>
   
@@ -94,13 +119,10 @@ Information of endpoints and planning the API
     3. PUT /employees
     # updates a employee
 
-    4. DELETE /employees/{username}
-    # deletes a employee
-
-    5. GET /employees
+    4. GET /employees
     # company requires all employees
 
-    6. GET /employees/me
+    5. GET /employees/me
     # employee requires own profile
 </details>
 <details>
@@ -165,24 +187,6 @@ Information of endpoints and planning the API
     
     5. GET /tasks/{id}
     # get a specifc task
-</details>
-<details>
-  <summary>Comment Controller</summary>
-
-    1. POST /comments/{task_id}
-    # creates a new comment
-
-    2. PUT /comments/{id}
-    # updates a comment
-
-    3. DELETE /comments/{id}
-    # deletes a comment
-    
-    4. GET /comments/{id}
-    # get a specific comment
-    
-    5. GET /comments
-    # get all its comments
 </details>
 
 #### Diagrams
