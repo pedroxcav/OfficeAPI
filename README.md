@@ -20,7 +20,7 @@ Both the RESTful API and PostgreSQL Database was deployed using the Render servi
 
 The Download:
 
-[![Postman Badge](https://img.shields.io/badge/Postman-685e96.svg?style=for-the-badge&logo=Postman&logoColor=white)](https://drive.google.com/file/d/1mXtsqkLjJRKMLyfevDPbuOLxFGv90oPW/view?usp=sharing)
+[![Postman Badge](https://img.shields.io/badge/Postman-685e96.svg?style=for-the-badge&logo=Postman&logoColor=white)](https://drive.google.com/file/d/1vT6ms0iXogV3fY9pUPU_ycZI98H_km0o/view?usp=sharing)
 
 But even though the API is already deployed and hosted on Render, you steel choose to run the application on your own computer, don't worry about it, here are some instructions for you to make everything runs okay.
 </p>
