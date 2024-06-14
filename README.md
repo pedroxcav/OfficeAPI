@@ -1,6 +1,6 @@
 ## Office RestAPI
 <p align = "justify">
-The Office API was developed to enable companies to manage their own business better. In the application, companies are able to register employees and configurate projects with specialized teams. Managers can set new tasks for their led projects with description of what they have to do and deadlines to achieve. At the same time, employees must organize their works and objectives by observing deadlines and making comments on tasks for the rest of the team.
+The Office API was developed to enable companies to manage their own business better. In the application, companies are able to register employees and configurate projects with specialized teams. Managers can set new tasks for their led projects with description of what they have to do and deadlines to achieve. At the same time, employees must organize their objectives by observing deadlines and commenting on tasks for the rest of the team.
 </p>
 
 ### Technologies 📱
