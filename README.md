@@ -1,6 +1,6 @@
 ## Office RestAPI
 <p align = "justify">
-The Office API was developed to able companies to manage their own business better. In the application, companies are able to register your employees and configurate specific projects with specialized teams. Managers can set new tasks for their led projects with description of what they have to do and deadlines to achieve. At the same time, employees must organize their works and objectives by observing deadlines and making comments on tasks for the rest of the team.
+The Office API was developed to enable companies to manage their own business better. In application, companies are able to register your employees and configurate specific projects with specialized teams. Managers can set new tasks for their led projects with description of what they have to do and deadlines to achieve. At the same time, employees must organize their works and objectives by observing deadlines and making comments on tasks for the rest of the team.
 </p>
 
 ### Technologies 📱
@@ -16,13 +16,13 @@ The Office API was developed to able companies to manage their own business bett
 
 ### Deploy ☁️
 <p align = "justify">
-Both the RESTful API and PostgreSQL Database was deployed using the Render services and you can already use it. Make your requests in your own HTTP CLient, like Postman for example, through the following link (https://officeapi-deploy.onrender.com). I left below a Postman collection with all the API requests, so you can turn your manual tests even better!
+Both the RESTful API and PostgreSQL Database was deployed using the Render services and you can already use it. Make your requests in your own HTTP CLient, like Postman for example, through the following link (https://officeapi-deploy.onrender.com). I left below a Postman collection with all the API requests, so you can test easier!
 
 The Download:
 
 [![Postman Badge](https://img.shields.io/badge/Postman-685e96.svg?style=for-the-badge&logo=Postman&logoColor=white)](https://drive.google.com/file/d/1mXtsqkLjJRKMLyfevDPbuOLxFGv90oPW/view?usp=sharing)
 
-But even though the API is already deployed and hosted on Render, you steel choose to run the application on your own computer, don't worry about it, here are some downloads and instructions for you to make everything runs okay.
+But even though the API is already deployed and hosted on Render, you steel choose to run the application on your own computer, don't worry about it, here are some instructions for you to make everything runs okay.
 </p>
 
 ### Configuration ⚙️
