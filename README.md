@@ -5,23 +5,35 @@ The Office API was developed to able companies to manage their own business bett
 
 ### Technologies 📱
 
-- Java Language 22
+- Java Language 17
 - Spring Boot (Web, JPA, Security)
 - Database with Flyway Migrations
+- PostgreSQL Relational Database
 - Tests with JUnit 5 and Mockito
-- MySQL Relational Database
 - OAuth2 Resource Server
 - JWT Token and Lombok
-- Using Spring Validation
+- Spring Validation
 
-### Downloads 📥
+### Deploy ☁️
+<p align = "justify">
+Both the RESTful API and PostgreSQL Database was deployed using the Render services and you can already use it. Make your requests in your own HTTP CLient, like Postman for example, through the following link (https://officeapi-deploy.onrender.com). I left below a Postman collection with all the API requests, so you can turn your manual tests even better!
+
+The Download:
+
+[![Postman Badge](https://img.shields.io/badge/Postman-685e96.svg?style=for-the-badge&logo=Postman&logoColor=white)](https://drive.google.com/file/d/1mXtsqkLjJRKMLyfevDPbuOLxFGv90oPW/view?usp=sharing)
+
+But even though the API is already deployed and hosted on Render, you steel choose to run the application on your own computer, don't worry about it, here are some downloads and instructions for you to make everything runs okay.
+</p>
+
+### Configuration ⚙️
 Before you start, you need this installed:
 - Versioning Software [Downlaod GIT](https://git-scm.com/downloads)
 - Java Language [Download Java SDK](https://www.oracle.com/br/java/technologies/downloads/)
-- MySQL Database [Download MySQL](https://dev.mysql.com/downloads/)
 - Code Editor IDE [Download Intelij](https://www.jetbrains.com/idea/download/?section=windows)
 - Cryptography [Download OpenSSL](https://sourceforge.net/projects/openssl/)
+- PostgreSQL Database [Download Postgre](https://www.postgresql.org/download/)
 - Dependency Manager [Download Maven](https://maven.apache.org/download.cgi)
+- HTTP Client [Download Postman](https://www.postman.com/downloads/)
 ### Settings ⚙️
 Define your system environment variables:
 - Maven, OpenSSL and GIT
@@ -172,12 +184,6 @@ Information of endpoints and planning the API
     5. GET /comments
     # get all its comments
 </details>
-
-Your manual tests can be easier with
-
-Postman Collection [Download](https://drive.google.com/file/d/1mXtsqkLjJRKMLyfevDPbuOLxFGv90oPW/view?usp=sharing)
-
-![Postman Badge](https://img.shields.io/badge/Postman-FF6C37.svg?style=for-the-badge&logo=Postman&logoColor=white)
 
 #### Diagrams
 <details>
