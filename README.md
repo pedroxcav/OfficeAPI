@@ -16,7 +16,7 @@ The Office API was developed to enable companies to manage better their own busi
 
 ### Deploy ☁️
 <p align = "justify">
-Both the RESTful API and PostgreSQL Database was deployed using the Render services and you can already use it. Make your requests in your own HTTP CLient, like Postman for example, using the following domain (https://officeapi-deploy.onrender.com). I left below a Postman collection with all the API requests, so you can test easier!
+Both the RESTful API and PostgreSQL Database was deployed using the Render services and you can already use it. Make your requests in your own HTTP CLient, like Postman for example, using the domain (https://officeapi-deploy.onrender.com). I left below a Postman collection with all the API requests, so you can test easier!
 
 The Download:
 
