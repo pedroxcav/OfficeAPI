@@ -1,6 +1,6 @@
 ## Office RestAPI
 <p align = "justify">
-The Office API was developed to enable companies to manage their own business better. In the application, companies are able to register employees and configurate projects with specialized teams. Managers can set new tasks for their led projects with description of what they have to do and deadlines to achieve. At the same time, employees must organize their objectives by observing deadlines and commenting on tasks for the rest of the team.
+The Office API was developed to enable companies to manage better their own business In the application, companies are able to register employees and configurate projects with specialized teams. Managers can set new tasks for their led projects with description of what they have to do and deadlines to achieve. At the same time, employees must organize their objectives by observing deadlines and commenting on tasks for the rest of the team.
 </p>
 
 ### Technologies 📱
@@ -16,7 +16,7 @@ The Office API was developed to enable companies to manage their own business be
 
 ### Deploy ☁️
 <p align = "justify">
-Both the RESTful API and PostgreSQL Database was deployed using the Render services and you can already use it. Make your requests in your own HTTP CLient, like Postman for example, through the following link (https://officeapi-deploy.onrender.com). I left below a Postman collection with all the API requests, so you can test easier!
+Both the RESTful API and PostgreSQL Database was deployed using the Render services and you can already use it. Make your requests in your own HTTP CLient, like Postman for example, using the following domain (https://officeapi-deploy.onrender.com). I left below a Postman collection with all the API requests, so you can test easier!
 
 The Download:
 
@@ -40,6 +40,8 @@ Define your system environment variables:
 - PUBLIC_KEY
 - PRIVATE_KEY
 ```bash
+# use command prompt
+
 # generate private key:
 openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
 # generate public key:
