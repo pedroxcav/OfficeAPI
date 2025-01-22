@@ -37,6 +37,7 @@ Before you start, you need this installed:
 
 Define your system environment variables:
 
+- Maven, OpenSSL and GIT
 - PUBLIC_KEY
 - PRIVATE_KEY
 ```bash
@@ -52,7 +53,6 @@ openssl rsa -pubout -in private_key.pem -out public_key.pem
 - DATABASE_URL
 - DATABASE_USERNAME
 - DATABASE_PASSWORD
-- Maven, OpenSSL and GIT
 
 After it, open command prompt and follow:
 ```bash
